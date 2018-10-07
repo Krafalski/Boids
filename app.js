@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 
   container.appendChild(canvas)
-  const flock = new Flock(20)
+  const flock = new Flock(20, Kaleidoscope)
   const loop = () => {
     setTimeout(loop, 100)
     flock.updateFlock()
@@ -49,7 +49,19 @@ class Boid {
 
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
+  }
+}
 
+class Kaleidoscope extends Boid {
+  constructor (xPos, yPos, planeWidth, planeHeight, wrap) {
+    super(xPos, yPos, planeWidth, planeHeight)
+    this.wrap = wrap
+  }
+  updatePosition () {
+    super.updatePosition()
+    this.wrapLogic()
+  }
+  wrapLogic () {
     if (this.wrap) {
       this.position.x = (this.position.x + this.velocity.x) % this.planeWidth
       this.position.y = (this.position.y + this.velocity.y) % this.planeHeight
@@ -63,21 +75,20 @@ class Boid {
       this.position.x += this.velocity.x
       this.position.y += this.velocity.y
     }
-
     this.acceleration = { x: 0, y: 0 }
   }
 }
 
 class Flock {
-  constructor (flockSize) {
+  constructor (flockSize, BoidType) {
     this.boids = []
     this.size = flockSize
+    this.BoidType = BoidType
     this.populateFlock()
   }
-
   populateFlock () {
     for (let n = 0; n < this.size; n++) {
-      this.boids.push(new Boid(canvas.width / 2, canvas.height / 2, canvas.width, canvas.height, true))
+      this.boids.push(new this.BoidType(canvas.width / 2, canvas.height / 2, canvas.width, canvas.height, true))
       let angle = (n / this.size) * 2 * Math.PI
       this.boids[n].velocity = {x: Math.cos(angle), y: Math.sin(angle)}
     }
