@@ -1,9 +1,10 @@
-/* global document:true event:true  Flock:true flock:true boidType:true Boid: true ctx:true canvas:true Kaleidoscope:true drawingUtils: true */
+/* global document:true event:true  Flock:true flock:true boidType:true Boid: true ctx:true canvas:true Kaleidoscope:true drawingUtils:true  SmartFlock:true */
 
 // document on ready
 document.addEventListener('DOMContentLoaded', () => {
   // control values
-  let boidType = 'Boid'
+  let boidType = Boid
+  let FlockType = Flock
   let animation = 'Moving Boids'
   let speed = 10
   let boidNum = 20
@@ -24,11 +25,33 @@ document.addEventListener('DOMContentLoaded', () => {
       if (type.innerText === 'Basic Boid') {
         boidType = Boid
         ctx.clearRect(0, 0, canvas.width, canvas.height)
-        flock = new Flock(boidNum, boidType)
+        flock = new FlockType(boidNum, boidType)
       } else {
         boidType = Kaleidoscope
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         flock = new Flock(boidNum, boidType)
+      }
+    })
+  })
+
+  // flock selection
+  const selectFlockType = document.querySelectorAll('.flock-type')
+  selectFlockType.forEach(type => {
+    type.addEventListener('click', () => {
+      // remove selected class
+      selectFlockType.forEach(type => {
+        type.classList.remove('selected')
+      })
+      // add selected class to selected type
+      event.currentTarget.classList.add('selected')
+      if (type.innerText === 'Flock') {
+        FlockType = Flock
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        flock = new FlockType(boidNum, boidType)
+      } else {
+        FlockType = SmartFlock
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        flock = new FlockType(boidNum, boidType)
       }
     })
   })
