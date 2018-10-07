@@ -7,11 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('.container')
 
   const ctx = canvas.getContext('2d')
+  ctx.fillStyle = 'gainsboro'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
 
   container.appendChild(canvas)
   const flock = new Flock(20)
   const loop = () => {
-    setTimeout(loop, 20)
+    setTimeout(loop, 100)
     flock.updateFlock()
     ctx.save()
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -99,6 +101,12 @@ const drawingUtils = {
     context.lineTo((SideLength + 3) * Math.cos(a * 3), (SideLength + 3) * Math.sin(a * 3))
     context.lineTo(SideLength * Math.cos(a * 2), SideLength * Math.sin(a * 2))
     context.closePath()
+    if (context.fillStyle === '#b6b6b6') {
+      context.fillStyle = '#909090'
+    } else {
+      context.fillStyle = '#b6b6b6'
+    }
+
     context.fill()
     context.setTransform(1, 0, 0, 1, 0, 0) // reset the transform
     return true
