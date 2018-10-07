@@ -1,12 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Fahkwang|Krub|Open+Sans+Condensed:300|Playfair+Display:400,700,900');
+
 body {
   background: #dcdcdc;
+  font-family: 'Fahkwang', serif;
+  color: ghostwhite;
+  text-shadow: 1px 1px 2px grey;
+
+}
+
+ul {
+  list-style: none;
+}
+
+li:hover {
+  color: grey;
+}
+
+button {
+  background: rgba(25, 25, 25, 0.5);
+  padding: 1em;
+  margin: 1em;
+  color: ghostwhite;
+}
+
+button:active, button:focus {
+  border: none;
+  outline: none;
 }
 
 .container {
   width: 90%;
   margin: auto;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.selected {
+  color: black;
 }
 
 canvas {
