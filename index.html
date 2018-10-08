@@ -5,6 +5,7 @@
     <title>Flocking</title>
       <link rel="stylesheet" href="main.css">
       <script src="js/app.js" charset="utf-8"></script>
+      <script src="js/vectorutils.js" charset="utf-8"></script>
       <script src="js/rendering.js" charset="utf-8"></script>
       <script src="js/boid.js" charset="utf-8"></script>
       <script src="js/kaleidoscope.js" charset="utf-8"></script>
@@ -19,11 +20,7 @@
         <ul>
           <li class="boid-type selected">Basic Boid</li>
           <li class="boid-type">Kaleidoscope</li>
-        </ul>
-        <h2>Flock Type</h2>
-        <ul>
-          <li class="flock-type selected">Flock</li>
-          <li class="flock-type">Smart Flock</li>
+          <li class="boid-type">Separator Boid</li>
         </ul>
         <h2>Animation</h2>
         <ul>
@@ -34,6 +31,8 @@
         <input type="range" name="speed" min="10" max="100" step="1" id='speed'>
         <h2>Number of Boids</h2>
         <input type="range" name="numberOfBoids" min="1" max='100' step="1" id='num-of-boids'>
+        <h2>Boid Size</h2>
+        <input type="range" name="numberOfBoids" min="5" max='200' step="1" id='boid-size'>
         <ul>
           <li><button>Start</button></li>
           <li><button>Stop</button></li>

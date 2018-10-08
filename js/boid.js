@@ -1,4 +1,4 @@
-/* Boid:true */
+/* Boid:true vectorUtils:true */
 
 // basic boid class
 // boids will be positioned and move outwards

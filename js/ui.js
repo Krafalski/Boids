@@ -6,8 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let boidType = Boid
   let FlockType = Flock
   let animation = 'Moving Boids'
-  let speed = 10
+  let speed = 20
   let boidNum = 20
+  let boidSize = 10
+
   let flock = new Flock(boidNum, Boid)
   let animate
   // event listeners/handlers
@@ -24,6 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
       boidType = type.innerText
       if (type.innerText === 'Basic Boid') {
         boidType = Boid
+        FlockType = Flock
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        flock = new FlockType(boidNum, boidType)
+      } else if (type.innerText === 'Separator Boid') {
+        boidType =  SeparatorBoid
+        FlockType = SmartFlock
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         flock = new FlockType(boidNum, boidType)
       } else {
@@ -34,27 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   })
 
-  // flock selection
-  const selectFlockType = document.querySelectorAll('.flock-type')
-  selectFlockType.forEach(type => {
-    type.addEventListener('click', () => {
-      // remove selected class
-      selectFlockType.forEach(type => {
-        type.classList.remove('selected')
-      })
-      // add selected class to selected type
-      event.currentTarget.classList.add('selected')
-      if (type.innerText === 'Flock') {
-        FlockType = Flock
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        flock = new FlockType(boidNum, boidType)
-      } else {
-        FlockType = SmartFlock
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        flock = new FlockType(boidNum, boidType)
-      }
-    })
-  })
   // animation type selection
   const selectAnimation = document.querySelectorAll('.animation')
   selectAnimation.forEach(type => {
@@ -81,6 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     flock = new Flock(boidNum, boidType)
   })
+  const selectBoidSize = document.querySelector('#boid-size')
+  selectBoidSize.addEventListener('change', () => {
+    boidSize = selectBoidSize.value
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    flock = new Flock(boidNum, boidType)
+  })
+
   // start
   // stop
   // reset
@@ -125,6 +119,41 @@ document.addEventListener('DOMContentLoaded', () => {
     drawingUtils.renderFlock(flock, ctx)
     // restores ... need to look this up
     ctx.restore()
+  }
+
+  const drawingUtils = {
+    // make boids awesome triangle shape
+    drawTriangle (context, PosX, PosY, SideLength, Orientation) {
+      context.setTransform(1, 0, 0, 1, PosX, PosY) // Set position
+      context.rotate(Orientation) // set rotation in radians
+      context.beginPath()
+      const sides = 3
+      const a = ((Math.PI * 2) / sides)
+      context.moveTo(SideLength, 0)
+      context.lineTo(SideLength * Math.cos(a * 1), SideLength * Math.sin(a * 1))
+      context.lineTo((SideLength + 3) * Math.cos(a * 3), (SideLength + 3) * Math.sin(a * 3))
+      context.lineTo(SideLength * Math.cos(a * 2), SideLength * Math.sin(a * 2))
+      context.closePath()
+      // alternate boid color  - because why not?
+      if (context.fillStyle === '#b6b6b6') {
+        context.fillStyle = '#909090'
+      } else {
+        context.fillStyle = '#b6b6b6'
+      }
+      context.fill()
+      context.setTransform(1, 0, 0, 1, 0, 0) // reset the transform
+      return true
+    },
+    // draw/render one bird
+    renderBoid (boid, context) {
+      this.drawTriangle(context, boid.position.x, boid.position.y, parseInt(boidSize), boid.heading)
+    },
+    // draw/render each boid
+    renderFlock (flock, context) {
+      for (let boid of flock.boids) {
+        this.renderBoid(boid, context)
+      }
+    }
   }
   // on page load start animation
   loop()
