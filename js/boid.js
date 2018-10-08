@@ -4,8 +4,6 @@
 // boids will be positioned and move outwards
 class Boid {
   constructor (xPos, yPos, planeWidth, planeHeight, wrap) {
-    // need to look up what this does
-    this.mass = 1
     // set boundries based on canvas size
     this.planeWidth = planeWidth
     this.planeHeight = planeHeight
@@ -17,12 +15,7 @@ class Boid {
   get heading () {
     return Math.atan2(this.velocity.y, this.velocity.x)
   }
-  // not currently using this?
-  applyForce (force) {
-    this.acceleration.x += force.x / this.mass
-    this.acceleration.y += force.y / this.mass
-  }
-  // more functionality to come?
+  // more functionality to come
   update () {
     this.updatePosition()
   }
@@ -33,5 +26,8 @@ class Boid {
 
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
+
+    // reset accelration for each frame
+    this.acceleration = {x: 0, y: 0}
   }
 }

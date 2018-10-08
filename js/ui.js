@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let boidType = Boid
   let FlockType = Flock
   let animation = 'Moving Boids'
-  let speed = 20
+  let speed = 100
   let boidNum = 20
-  let boidSize = 10
+  let boidSize = 5
 
   let flock = new Flock(boidNum, Boid)
   let animate
@@ -34,6 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
         FlockType = SmartFlock
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         flock = new FlockType(boidNum, boidType)
+        const strength = document.createElement('input')
+        strength.setAttribute('type', 'range')
+        strength.setAttribute('name', 'strength')
+        strength.setAttribute('min', 1)
+        strength.setAttribute('max', 20)
+        strength.setAttribute('step', 1)
+        strength.setAttribute('id', 'strength')
+        document.querySelector('body').appendChild(strength)
       } else {
         boidType = Kaleidoscope
         ctx.clearRect(0, 0, canvas.width, canvas.height)
